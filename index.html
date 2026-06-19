@@ -1277,10 +1277,7 @@ p { line-height: 1.7; font-weight: 400; }
 
 /* === STATEMENT (línea de comunicación principal) === */
 .statement-inner {
-  display: grid;
-  grid-template-columns: 1.1fr 1fr;
-  gap: clamp(48px, 6vw, 96px);
-  align-items: center;
+  display: block;
 }
 .statement-text h2 {
   font-family: var(--font-primary);
@@ -2027,7 +2024,9 @@ p { line-height: 1.7; font-weight: 400; }
 /* === Statement visual — VIDEO variant (Proyectamos el futuro) === */
 .statement-visual--video {
   background: var(--navy);
-  aspect-ratio: 1;
+  aspect-ratio: auto;
+  width: 100%;
+  height: min(82vh, 760px);
   isolation: isolate;
 }
 .statement-visual--video .statement-video {
@@ -3002,11 +3001,6 @@ body {
 <!-- ============== STATEMENT (línea de comunicación principal) ============== -->
 <section class="section">
   <div class="container statement-inner">
-    <div class="statement-text reveal">
-      <h2>Proyectamos el futuro<em>con experiencia y detalle.</em></h2>
-      <div class="statement-line"></div>
-      <p>Cada desarrollo que emprendemos es mucho más que una inversión. Es una extensión de nuestro nombre, de nuestra trayectoria y de lo que proyectamos hacia el futuro.</p>
-    </div>
     <div class="statement-visual statement-visual--video reveal-scale" data-cursor-target>
       <video class="statement-video" autoplay muted loop playsinline preload="metadata" poster="assets/img/Diseno-sin-titulo-2.png" aria-label="ARDO — Proyectamos el futuro con experiencia y detalle">
         <source src="assets/videos/04S-VIDEO.mp4" type="video/mp4">
