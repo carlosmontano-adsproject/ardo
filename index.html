@@ -848,26 +848,16 @@ p { line-height: 1.7; font-weight: 400; }
   margin-bottom: 32px;
 }
 .sector-icon {
-  width: 56px;
-  height: 56px;
-  margin-bottom: 28px;
+  margin-bottom: 24px;
   display: flex;
   align-items: center;
-  justify-content: center;
-  background: var(--navy);
-  position: relative;
-  transition: transform var(--t-fast) var(--ease), background var(--t-fast) var(--ease);
+  transition: transform var(--t-fast) var(--ease);
 }
-.sector-card:hover .sector-icon {
-  background: var(--lime);
+.sector-icon img {
+  height: 64px;
+  width: auto;
+  display: block;
 }
-.sector-icon svg {
-  width: 26px;
-  height: 26px;
-  color: var(--lime);
-  transition: color var(--t-fast) var(--ease);
-}
-.sector-card:hover .sector-icon svg { color: var(--navy); }
 .sector-card h3 {
   font-family: var(--font-primary);
   font-size: 24px;
@@ -2826,37 +2816,37 @@ body {
       <article class="sector-card reveal" data-cursor-target>
         <div class="sector-num">01 · Sector</div>
         <div class="sector-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+          <img src="assets/img/ICONOS_ARDO-01.png" alt="Sector Comercial" loading="lazy">
         </div>
         <h3>Comercial</h3>
-        <p>Desarrollos enfocados en plazas comerciales, locales y espacios de retail con visión de plusvalía y flujo continuo de visitantes.</p>
+        <p>Plazas, locales y retail con alta plusvalía y flujo constante de visitantes.</p>
       </article>
 
       <article class="sector-card reveal rd1" data-cursor-target>
         <div class="sector-num">02 · Sector</div>
         <div class="sector-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21v-9l9-7 9 7v9"/><path d="M9 21V12h6v9"/></svg>
+          <img src="assets/img/ICONOS_ARDO-02.png" alt="Sector Residencial" loading="lazy">
         </div>
         <h3>Residencial</h3>
-        <p>Proyectos habitacionales boutique con atención meticulosa al detalle y diseño que trasciende. El arte de habitar.</p>
+        <p>Vivienda boutique con diseño cuidado al detalle. El arte de habitar.</p>
       </article>
 
       <article class="sector-card reveal rd2" data-cursor-target>
         <div class="sector-num">03 · Sector</div>
         <div class="sector-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2 22V8l8-4v18"/><path d="M10 22V11l8-4v15"/><line x1="2" y1="22" x2="22" y2="22"/></svg>
+          <img src="assets/img/ICONOS_ARDO-03.png" alt="Sector Industrial" loading="lazy">
         </div>
         <h3>Industrial</h3>
-        <p>Naves, parques y desarrollos industriales que responden a la dinámica del corredor manufacturero del Bajío.</p>
+        <p>Naves y parques industriales para el corredor manufacturero del Bajío.</p>
       </article>
 
       <article class="sector-card reveal rd3" data-cursor-target>
         <div class="sector-num">04 · Sector</div>
         <div class="sector-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="2" width="12" height="20"/><line x1="6" y1="8" x2="18" y2="8"/><line x1="6" y1="14" x2="18" y2="14"/></svg>
+          <img src="assets/img/ICONOS_ARDO-04.png" alt="Sector Vertical" loading="lazy">
         </div>
         <h3>Vertical</h3>
-        <p>Torres residenciales y mixtas que aprovechan al máximo zonas de alta plusvalía con diseño arquitectónico distintivo.</p>
+        <p>Torres residenciales y mixtas en zonas de alta plusvalía, con diseño distintivo.</p>
       </article>
     </div>
   </div>
