@@ -610,6 +610,41 @@ p { line-height: 1.7; font-weight: 400; }
     radial-gradient(120% 80% at 50% 45%, transparent 52%, rgba(11, 26, 35, 0.5) 100%),
     linear-gradient(to top, rgba(11, 26, 35, 0.4), transparent 28%);
 }
+.video-feature-bg { cursor: pointer; }
+/* Indicador ▶ que aparece cuando el video está pausado */
+.video-play-indicator {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.8);
+  width: 92px;
+  height: 92px;
+  border-radius: 50%;
+  background: rgba(11, 26, 35, 0.55);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 2;
+  transition: opacity var(--t-fast) var(--ease), transform var(--t-fast) var(--ease);
+}
+.video-play-indicator::after {
+  content: '';
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 15px 0 15px 25px;
+  border-color: transparent transparent transparent #fff;
+  margin-left: 6px;
+}
+.video-feature.is-paused .video-play-indicator {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+}
 .video-sound-toggle {
   position: absolute;
   right: clamp(20px, 4vw, 48px);
@@ -2769,6 +2804,7 @@ body {
     <source src="assets/videos/rodan520.mp4" type="video/mp4">
   </video>
   <div class="video-feature-overlay" aria-hidden="true"></div>
+  <div class="video-play-indicator" aria-hidden="true"></div>
   <button class="video-sound-toggle is-muted" id="video-sound-toggle" type="button" aria-pressed="false" aria-label="Activar sonido del video">
     <span class="vst-icon" aria-hidden="true">🔊</span>
     <span class="vst-label">Activar sonido</span>
@@ -3686,7 +3722,8 @@ body {
 
   var icon = btn.querySelector('.vst-icon');
   var label = btn.querySelector('.vst-label');
-  var userSet = false; // el usuario tomó control manual del sonido
+  var soundSet = false;   // el usuario controló el sonido manualmente
+  var userPaused = false; // el usuario pausó el video manualmente
 
   function render() {
     var muted = vid.muted;
@@ -3698,8 +3735,9 @@ body {
   }
 
   function attemptUnmute() {
-    if (userSet) return;
+    if (soundSet) return;
     vid.muted = false;
+    if (userPaused) { render(); return; }
     var p = vid.play();
     if (p && typeof p.then === 'function') {
       p.then(render).catch(function () {
@@ -3712,11 +3750,27 @@ body {
     }
   }
 
-  // Control manual con el botón
-  btn.addEventListener('click', function () {
-    userSet = true;
+  // Reflejar el estado de reproducción (muestra el ícono ▶ al pausar)
+  vid.addEventListener('play', function () { section.classList.remove('is-paused'); });
+  vid.addEventListener('pause', function () { section.classList.add('is-paused'); });
+
+  // Clic en el video: pausar / reanudar
+  section.addEventListener('click', function () {
+    if (vid.paused) {
+      userPaused = false;
+      vid.play().catch(function () {});
+    } else {
+      userPaused = true;
+      vid.pause();
+    }
+  });
+
+  // Botón de sonido (no debe pausar el video)
+  btn.addEventListener('click', function (e) {
+    e.stopPropagation();
+    soundSet = true;
     vid.muted = !vid.muted;
-    if (!vid.muted) { vid.play().catch(function () {}); }
+    if (!vid.muted && vid.paused && !userPaused) { vid.play().catch(function () {}); }
     render();
   });
 
@@ -3725,9 +3779,9 @@ body {
     var io = new IntersectionObserver(function (entries) {
       entries.forEach(function (e) {
         if (e.isIntersecting && e.intersectionRatio >= 0.6) {
-          vid.play().catch(function () {});
+          if (!userPaused) vid.play().catch(function () {});
           attemptUnmute();
-        } else if (!e.isIntersecting && !userSet) {
+        } else if (!e.isIntersecting && !soundSet) {
           vid.muted = true;
           render();
         }
@@ -3736,19 +3790,15 @@ body {
     io.observe(section);
   }
 
-  // Respaldo: el primer gesto real del usuario activa el sonido si la sección está visible
+  // Respaldo: el primer gesto FUERA del video activa el sonido si la sección está visible
   function inView() {
     var r = section.getBoundingClientRect();
     return r.top < window.innerHeight * 0.6 && r.bottom > window.innerHeight * 0.4;
   }
-  function onFirstGesture() {
-    if (userSet) { cleanup(); return; }
-    if (inView()) {
-      vid.muted = false;
-      vid.play().catch(function () {});
-      render();
-      cleanup();
-    }
+  function onFirstGesture(e) {
+    if (soundSet) { cleanup(); return; }
+    if (section.contains(e.target)) return; // dentro del video lo manejan el botón y el clic de pausa
+    if (inView()) { attemptUnmute(); cleanup(); }
   }
   function cleanup() {
     document.removeEventListener('pointerdown', onFirstGesture);
