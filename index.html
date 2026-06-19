@@ -585,6 +585,76 @@ p { line-height: 1.7; font-weight: 400; }
   .hero-inner { grid-template-columns: 1fr; gap: 48px; }
 }
 
+/* === VIDEO FEATURE · fondo a pantalla completa con sonido === */
+.video-feature {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  min-height: 560px;
+  overflow: hidden;
+  background: var(--navy);
+}
+.video-feature-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.video-feature-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(120% 80% at 50% 45%, transparent 52%, rgba(11, 26, 35, 0.5) 100%),
+    linear-gradient(to top, rgba(11, 26, 35, 0.4), transparent 28%);
+}
+.video-sound-toggle {
+  position: absolute;
+  right: clamp(20px, 4vw, 48px);
+  bottom: clamp(20px, 4vw, 48px);
+  z-index: 3;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 20px 12px 16px;
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  border-radius: 999px;
+  background: rgba(11, 26, 35, 0.45);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  color: #fff;
+  font-family: var(--font-primary);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  cursor: pointer;
+  transition: background var(--t-fast) var(--ease),
+              transform var(--t-fast) var(--ease),
+              border-color var(--t-fast) var(--ease);
+}
+.video-sound-toggle:hover {
+  background: rgba(11, 26, 35, 0.72);
+  border-color: #fff;
+  transform: translateY(-2px);
+}
+.video-sound-toggle .vst-icon { font-size: 16px; line-height: 1; }
+/* Pulso para invitar a activar el sonido mientras está silenciado */
+.video-sound-toggle.is-muted { animation: vst-pulse 2s var(--ease) infinite; }
+@keyframes vst-pulse {
+  0%   { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.5); }
+  70%  { box-shadow: 0 0 0 18px rgba(255, 255, 255, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .video-sound-toggle.is-muted { animation: none; }
+}
+@media (max-width: 900px) {
+  .video-feature { height: 72vh; min-height: 420px; }
+  .video-sound-toggle { font-size: 12px; padding: 10px 16px 10px 14px; }
+}
+
 /* === BRAND MARQUEE (líneas de comunicación oficiales del brandbook) === */
 .brand-marquee {
   background: var(--navy);
@@ -2693,6 +2763,18 @@ body {
   </div>
 </section>
 
+<!-- ============== VIDEO FULL-BLEED (sonido al entrar en pantalla) ============== -->
+<section class="video-feature" id="video-feature" aria-label="Video ARDO">
+  <video class="video-feature-bg" id="video-feature-bg" muted loop playsinline autoplay preload="metadata" poster="assets/img/Diseno-sin-titulo-2.png">
+    <source src="assets/videos/fondo_loop.mp4" type="video/mp4">
+  </video>
+  <div class="video-feature-overlay" aria-hidden="true"></div>
+  <button class="video-sound-toggle is-muted" id="video-sound-toggle" type="button" aria-pressed="false" aria-label="Activar sonido del video">
+    <span class="vst-icon" aria-hidden="true">🔊</span>
+    <span class="vst-label">Activar sonido</span>
+  </button>
+</section>
+
 <!-- ============== NOSOTROS (Pilares brandbook) ============== -->
 <section class="section" id="nosotros">
   <div class="container">
@@ -3591,6 +3673,93 @@ body {
       });
     });
   }
+})();
+</script>
+
+<!-- Video feature: activar sonido al entrar en pantalla (con respaldo manual) -->
+<script>
+(function () {
+  var section = document.getElementById('video-feature');
+  var vid = document.getElementById('video-feature-bg');
+  var btn = document.getElementById('video-sound-toggle');
+  if (!section || !vid || !btn) return;
+
+  var icon = btn.querySelector('.vst-icon');
+  var label = btn.querySelector('.vst-label');
+  var userSet = false; // el usuario tomó control manual del sonido
+
+  function render() {
+    var muted = vid.muted;
+    btn.classList.toggle('is-muted', muted);
+    btn.setAttribute('aria-pressed', String(!muted));
+    if (icon) icon.textContent = muted ? '🔊' : '🔇';
+    if (label) label.textContent = muted ? 'Activar sonido' : 'Silenciar';
+    btn.setAttribute('aria-label', muted ? 'Activar sonido del video' : 'Silenciar video');
+  }
+
+  function attemptUnmute() {
+    if (userSet) return;
+    vid.muted = false;
+    var p = vid.play();
+    if (p && typeof p.then === 'function') {
+      p.then(render).catch(function () {
+        // El navegador bloqueó el audio: volver a silenciar; el botón sigue pulsando.
+        vid.muted = true;
+        render();
+      });
+    } else {
+      render();
+    }
+  }
+
+  // Control manual con el botón
+  btn.addEventListener('click', function () {
+    userSet = true;
+    vid.muted = !vid.muted;
+    if (!vid.muted) { vid.play().catch(function () {}); }
+    render();
+  });
+
+  // Intentar activar el sonido cuando el video entra en pantalla
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting && e.intersectionRatio >= 0.6) {
+          vid.play().catch(function () {});
+          attemptUnmute();
+        } else if (!e.isIntersecting && !userSet) {
+          vid.muted = true;
+          render();
+        }
+      });
+    }, { threshold: [0, 0.6] });
+    io.observe(section);
+  }
+
+  // Respaldo: el primer gesto real del usuario activa el sonido si la sección está visible
+  function inView() {
+    var r = section.getBoundingClientRect();
+    return r.top < window.innerHeight * 0.6 && r.bottom > window.innerHeight * 0.4;
+  }
+  function onFirstGesture() {
+    if (userSet) { cleanup(); return; }
+    if (inView()) {
+      vid.muted = false;
+      vid.play().catch(function () {});
+      render();
+      cleanup();
+    }
+  }
+  function cleanup() {
+    document.removeEventListener('pointerdown', onFirstGesture);
+    document.removeEventListener('keydown', onFirstGesture);
+    document.removeEventListener('touchstart', onFirstGesture);
+  }
+  document.addEventListener('pointerdown', onFirstGesture, { passive: true });
+  document.addEventListener('keydown', onFirstGesture);
+  document.addEventListener('touchstart', onFirstGesture, { passive: true });
+
+  render();
 })();
 </script>
 </body>
