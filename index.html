@@ -533,12 +533,13 @@ p { line-height: 1.7; font-weight: 400; }
 .hero-eyebrow::before { background: var(--lime) !important; }
 .hero-title {
   font-family: var(--font-primary);
-  font-size: clamp(48px, 7vw, 128px);
+  font-size: clamp(32px, 4.4vw, 62px);
   font-weight: 500;
-  line-height: 0.92;
-  letter-spacing: -0.04em;
+  line-height: 1;
+  letter-spacing: -0.03em;
   color: var(--cream);
   margin-bottom: 28px;
+  white-space: nowrap;
 }
 .hero-title em {
   font-style: italic;
@@ -2332,7 +2333,7 @@ body {
   opacity: 1;
   transform: translateY(0) rotate(0);
 }
-.split-word { display: inline-block; overflow: hidden; padding: 0 0.04em; }
+.split-word { display: inline-block; overflow: hidden; padding: 0 0.12em; }
 
 /* === Fade-up escalonado (reveal con stagger automático) === */
 [data-stagger] > * {
@@ -2726,20 +2727,12 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--navy);
-  overflow: hidden;
-}
-.statement-mark-visual::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border: 1px solid rgba(234, 234, 146, 0.18);
-  pointer-events: none;
+  overflow: visible;
 }
 .statement-mark-visual #hero-isotipo {
-  width: min(56%, 300px);
+  width: min(62%, 340px);
   height: auto;
-  filter: drop-shadow(0 24px 60px rgba(0, 0, 0, 0.5));
+  filter: drop-shadow(0 18px 44px rgba(18, 57, 78, 0.18));
 }
 
 /* === EQUIPO · solo nombres (sin fotos) === */
@@ -2798,6 +2791,122 @@ body {
 }
 @media (max-width: 720px) {
   .team-names { grid-template-columns: 1fr; max-width: 480px; }
+}
+
+/* === REELS / INSTAGRAM (estilo ARDO) === */
+.reels-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  margin-top: 56px;
+}
+.reel-card { display: flex; flex-direction: column; }
+.reel-media {
+  position: relative;
+  aspect-ratio: 9 / 16;
+  overflow: hidden;
+  background: var(--carbon);
+  border: 1px solid var(--navy-line);
+}
+.reel-video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 1.2s var(--ease);
+}
+.reel-card:hover .reel-video { transform: scale(1.04); }
+.reel-badge {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  z-index: 3;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-family: var(--font-secondary);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--cream);
+  background: rgba(20, 24, 28, 0.42);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  padding: 6px 11px;
+  border-radius: 3px;
+  border: 1px solid rgba(237, 234, 229, 0.16);
+}
+.reel-badge-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 2px;
+  background: var(--lime);
+}
+.reel-sound {
+  position: absolute;
+  bottom: 14px;
+  right: 14px;
+  z-index: 3;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: rgba(18, 57, 78, 0.55);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  transition: background var(--t-fast) var(--ease);
+}
+.reel-sound:hover { background: var(--navy); }
+.reel-sound svg { width: 19px; height: 19px; fill: var(--cream); }
+.reel-sound.is-muted .reel-wave { display: none; }
+.reel-sound.is-muted::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: 22px;
+  height: 1.5px;
+  background: var(--cream);
+  transform: rotate(-45deg);
+}
+.reel-info {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 18px 2px 0;
+}
+.reel-title {
+  font-family: var(--font-primary);
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--navy);
+  letter-spacing: -0.01em;
+}
+.reel-link {
+  font-family: var(--font-secondary);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--taupe);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+  transition: color var(--t-fast) var(--ease);
+}
+.reel-link:hover { color: var(--navy); }
+.reel-link .reel-arrow { transition: transform var(--t-fast) var(--ease); }
+.reel-link:hover .reel-arrow { transform: translateX(4px); }
+@media (max-width: 860px) {
+  .reels-grid { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 560px) {
+  .reels-grid { grid-template-columns: 1fr; max-width: 360px; margin-inline: auto; }
 }
 </style>
 
@@ -3141,6 +3250,61 @@ body {
         <div class="team-name-info">
           <h4>María José Arena</h4>
           <p>Coordinadora de Proyectos</p>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============== REELS / INSTAGRAM ============== -->
+<section class="section reels-section" id="reels">
+  <div class="container">
+    <div class="services-head">
+      <div>
+        <span class="eyebrow reveal">Instagram · @ardo</span>
+        <h2 class="reveal">En movimiento.<br/><span class="accent">Síguenos.</span></h2>
+      </div>
+      <p class="lead reveal rd1">Reels, colaboraciones y el detrás de cada proyecto. Así se construye una visión hecha realidad.</p>
+    </div>
+
+    <div class="reels-grid">
+      <article class="reel-card reveal" data-cursor-target>
+        <div class="reel-media">
+          <video class="reel-video" src="assets/videos/reel-1.mp4" muted loop playsinline preload="none" poster="assets/img/Diseno-sin-titulo-2.png" aria-label="Reel ARDO · Colaboración"></video>
+          <span class="reel-badge"><span class="reel-badge-dot"></span>Reel</span>
+          <button type="button" class="reel-sound is-muted" aria-label="Activar o desactivar sonido del reel">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9v6h4l5 5V4L7 9H3z"/><path class="reel-wave" d="M16.5 12a4.5 4.5 0 0 0-2.5-4.03v8.05A4.5 4.5 0 0 0 16.5 12z"/></svg>
+          </button>
+        </div>
+        <div class="reel-info">
+          <span class="reel-title">Colaboración</span>
+          <a href="https://www.instagram.com/p/DYFTUXmRyI8/" class="reel-link" target="_blank" rel="noopener" data-cursor-target>Ver en IG <span class="reel-arrow">→</span></a>
+        </div>
+      </article>
+      <article class="reel-card reveal rd1" data-cursor-target>
+        <div class="reel-media">
+          <video class="reel-video" src="assets/videos/reel-2.mp4" muted loop playsinline preload="none" poster="assets/img/Diseno-sin-titulo-2.png" aria-label="Reel ARDO · Grandes proyectos"></video>
+          <span class="reel-badge"><span class="reel-badge-dot"></span>Reel</span>
+          <button type="button" class="reel-sound is-muted" aria-label="Activar o desactivar sonido del reel">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9v6h4l5 5V4L7 9H3z"/><path class="reel-wave" d="M16.5 12a4.5 4.5 0 0 0-2.5-4.03v8.05A4.5 4.5 0 0 0 16.5 12z"/></svg>
+          </button>
+        </div>
+        <div class="reel-info">
+          <span class="reel-title">Grandes proyectos</span>
+          <a href="https://www.instagram.com/p/DXW8wmokVJr/" class="reel-link" target="_blank" rel="noopener" data-cursor-target>Ver en IG <span class="reel-arrow">→</span></a>
+        </div>
+      </article>
+      <article class="reel-card reveal rd2" data-cursor-target>
+        <div class="reel-media">
+          <video class="reel-video" src="assets/videos/reel-3.mp4" muted loop playsinline preload="none" poster="assets/img/Diseno-sin-titulo-2.png" aria-label="Reel ARDO · El arte de habitar"></video>
+          <span class="reel-badge"><span class="reel-badge-dot"></span>Reel</span>
+          <button type="button" class="reel-sound is-muted" aria-label="Activar o desactivar sonido del reel">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9v6h4l5 5V4L7 9H3z"/><path class="reel-wave" d="M16.5 12a4.5 4.5 0 0 0-2.5-4.03v8.05A4.5 4.5 0 0 0 16.5 12z"/></svg>
+          </button>
+        </div>
+        <div class="reel-info">
+          <span class="reel-title">El arte de habitar</span>
+          <a href="https://www.instagram.com/p/DWrGoc1EQiZ/" class="reel-link" target="_blank" rel="noopener" data-cursor-target>Ver en IG <span class="reel-arrow">→</span></a>
         </div>
       </article>
     </div>
@@ -3803,6 +3967,36 @@ body {
   document.addEventListener('touchstart', onFirstGesture, { passive: true });
 
   render();
+})();
+</script>
+
+<script>
+(function() {
+  'use strict';
+  var reels = document.querySelectorAll('.reel-video');
+  if (!reels.length) return;
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if (e.isIntersecting) { e.target.play().catch(function(){}); }
+        else { e.target.pause(); }
+      });
+    }, { threshold: 0.4 });
+    reels.forEach(function(v){ io.observe(v); });
+  }
+  document.querySelectorAll('.reel-sound').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var video = btn.closest('.reel-card').querySelector('.reel-video');
+      var willUnmute = video.muted;
+      reels.forEach(function(v){ v.muted = true; });
+      document.querySelectorAll('.reel-sound').forEach(function(b){ b.classList.add('is-muted'); });
+      if (willUnmute) {
+        video.muted = false;
+        btn.classList.remove('is-muted');
+        video.play().catch(function(){});
+      }
+    });
+  });
 })();
 </script>
 </body>
