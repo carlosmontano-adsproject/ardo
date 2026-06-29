@@ -2759,49 +2759,36 @@ body {
 }
 .team-name-card {
   display: flex;
-  align-items: center;
-  gap: 22px;
-  padding: 32px 34px;
-  background: var(--carbon-soft);
-  border: 1px solid rgba(163, 156, 150, 0.16);
-  border-left: 3px solid var(--lime);
-  transition: transform var(--t-fast) var(--ease), background var(--t-fast) var(--ease);
-}
-.team-name-card:hover {
-  transform: translateY(-4px);
-  background: var(--carbon-card);
-}
-.team-monogram {
-  flex-shrink: 0;
-  width: 64px;
-  height: 64px;
-  border-radius: 50%;
-  display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  background: var(--navy);
-  color: var(--lime);
-  font-family: var(--font-primary);
-  font-size: 20px;
-  font-weight: 600;
-  letter-spacing: 0.04em;
-  border: 1px solid rgba(234, 234, 146, 0.28);
+  gap: 20px;
+  text-align: center;
+  min-height: 150px;
+  padding: 46px 32px;
+  background: var(--carbon-soft);
+  border: 1px solid rgba(163, 156, 150, 0.14);
+  transition: transform var(--t-med) var(--ease), background var(--t-fast) var(--ease), border-color var(--t-fast) var(--ease);
 }
-.team-name-info h4 {
+.team-name-card::before {
+  content: '';
+  width: 28px;
+  height: 2px;
+  background: var(--lime);
+  transition: width var(--t-med) var(--ease);
+}
+.team-name-card:hover {
+  transform: translateY(-5px);
+  background: var(--carbon-card);
+  border-color: rgba(234, 234, 146, 0.22);
+}
+.team-name-card:hover::before { width: 52px; }
+.team-name-card h4 {
   font-family: var(--font-primary);
-  font-size: 21px;
+  font-size: clamp(22px, 2.4vw, 30px);
   font-weight: 600;
   color: var(--cream);
-  margin-bottom: 6px;
-  letter-spacing: -0.01em;
-}
-.team-name-info p {
-  font-family: var(--font-secondary);
-  font-size: 11px;
-  font-weight: 500;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  color: rgba(237, 234, 229, 0.5);
+  letter-spacing: -0.015em;
 }
 @media (max-width: 720px) {
   .team-names { grid-template-columns: 1fr; max-width: 480px; }
@@ -3253,18 +3240,10 @@ body {
 
     <div class="team-names">
       <article class="team-name-card reveal rd1" data-cursor-target>
-        <span class="team-monogram">AA</span>
-        <div class="team-name-info">
-          <h4>Alejandro Arena</h4>
-          <p>Director General</p>
-        </div>
+        <h4>Alejandro Arena</h4>
       </article>
       <article class="team-name-card reveal rd2" data-cursor-target>
-        <span class="team-monogram">MA</span>
-        <div class="team-name-info">
-          <h4>María José Arena</h4>
-          <p>Coordinadora de Proyectos</p>
-        </div>
+        <h4>María José Arena</h4>
       </article>
     </div>
   </div>
