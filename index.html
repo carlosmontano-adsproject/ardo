@@ -521,7 +521,7 @@ p { line-height: 1.7; font-weight: 400; }
   max-width: var(--container-max);
   margin: 0 auto;
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1.4fr 1fr;
   gap: 80px;
   align-items: center;
   width: 100%;
@@ -533,14 +533,15 @@ p { line-height: 1.7; font-weight: 400; }
 .hero-eyebrow::before { background: var(--lime) !important; }
 .hero-title {
   font-family: var(--font-primary);
-  font-size: clamp(32px, 4.4vw, 62px);
+  font-size: clamp(36px, 5.2vw, 78px);
   font-weight: 500;
-  line-height: 1;
+  line-height: 1.02;
   letter-spacing: -0.03em;
   color: var(--cream);
   margin-bottom: 28px;
   white-space: nowrap;
 }
+.hero-line { display: block; }
 .hero-title em {
   font-style: italic;
   font-weight: 300;
@@ -2708,17 +2709,30 @@ body {
   pointer-events: none;
 }
 
-/* === HERO · video lateral (mitad derecha) === */
-.hero-visual--video { aspect-ratio: 4 / 5; }
+/* === HERO · video lateral con difuminado premium === */
+.hero .hero-visual--video {
+  aspect-ratio: 4 / 5;
+  opacity: 1;
+  clip-path: none;
+  animation: none;
+}
+.hero-visual--video::before { display: none; }
+.hero-visual--video::after {
+  border: none;
+  background:
+    linear-gradient(to right, var(--carbon) 0%, rgba(30, 31, 28, 0.42) 24%, transparent 58%),
+    radial-gradient(130% 90% at 72% 50%, transparent 55%, rgba(30, 31, 28, 0.55) 100%);
+  z-index: 2;
+}
 .hero-visual video {
   width: 100%;
   height: 100%;
   object-fit: cover;
   display: block;
-  filter: grayscale(0.18);
+  filter: grayscale(0.12);
   transition: transform 1.4s var(--ease), filter 600ms var(--ease);
 }
-.hero-visual--video:hover video { transform: scale(1.06); filter: grayscale(0); }
+.hero-visual--video:hover video { transform: scale(1.04); filter: grayscale(0); }
 
 /* === STATEMENT · isotipo de marca (reemplaza el video) === */
 .statement-mark-visual {
@@ -2987,7 +3001,7 @@ body {
     <div>
       <span class="eyebrow hero-eyebrow">Desarrolladora · León, Guanajuato</span>
       <h1 class="hero-title">
-        Una visión
+        <span class="hero-line">Una visión</span>
         <em>hecha realidad.</em>
       </h1>
       <p class="hero-desc">El legado de ARDO nace de la unión de dos familias: Arena y Domínguez, comprometidas con el deseo de ir siempre un paso más allá. Proyectamos el futuro con experiencia y detalle.</p>
