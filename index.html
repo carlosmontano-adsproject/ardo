@@ -521,7 +521,7 @@ p { line-height: 1.7; font-weight: 400; }
   max-width: var(--container-max);
   margin: 0 auto;
   display: grid;
-  grid-template-columns: 1.3fr 1fr;
+  grid-template-columns: 1fr 1fr;
   gap: 80px;
   align-items: center;
   width: 100%;
@@ -1960,7 +1960,7 @@ p { line-height: 1.7; font-weight: 400; }
 
 /* Header logo */
 .header-logo {
-  height: 44px;
+  height: clamp(40px, 3.6vw, 50px);
   width: auto;
   display: block;
   transition: opacity var(--t-fast) var(--ease), transform var(--t-fast) var(--ease);
@@ -1972,7 +1972,7 @@ p { line-height: 1.7; font-weight: 400; }
 
 /* Footer logo */
 .footer-logo {
-  height: 48px;
+  height: 34px;
   width: auto;
   display: block;
   filter: brightness(0) invert(1);
@@ -2199,7 +2199,7 @@ p { line-height: 1.7; font-weight: 400; }
   animation: loader-pulse 1.6s var(--ease) infinite;
 }
 .loader-logo img {
-  height: 56px;
+  height: 54px;
   width: auto;
 }
 @keyframes loader-pulse {
@@ -2706,6 +2706,99 @@ body {
   border-radius: 2px;
   pointer-events: none;
 }
+
+/* === HERO · video lateral (mitad derecha) === */
+.hero-visual--video { aspect-ratio: 4 / 5; }
+.hero-visual video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  filter: grayscale(0.18);
+  transition: transform 1.4s var(--ease), filter 600ms var(--ease);
+}
+.hero-visual--video:hover video { transform: scale(1.06); filter: grayscale(0); }
+
+/* === STATEMENT · isotipo de marca (reemplaza el video) === */
+.statement-mark-visual {
+  position: relative;
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--navy);
+  overflow: hidden;
+}
+.statement-mark-visual::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border: 1px solid rgba(234, 234, 146, 0.18);
+  pointer-events: none;
+}
+.statement-mark-visual #hero-isotipo {
+  width: min(56%, 300px);
+  height: auto;
+  filter: drop-shadow(0 24px 60px rgba(0, 0, 0, 0.5));
+}
+
+/* === EQUIPO · solo nombres (sin fotos) === */
+.team-names {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+  margin-top: 56px;
+  max-width: 880px;
+}
+.team-name-card {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  padding: 32px 34px;
+  background: var(--carbon-soft);
+  border: 1px solid rgba(163, 156, 150, 0.16);
+  border-left: 3px solid var(--lime);
+  transition: transform var(--t-fast) var(--ease), background var(--t-fast) var(--ease);
+}
+.team-name-card:hover {
+  transform: translateY(-4px);
+  background: var(--carbon-card);
+}
+.team-monogram {
+  flex-shrink: 0;
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--navy);
+  color: var(--lime);
+  font-family: var(--font-primary);
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  border: 1px solid rgba(234, 234, 146, 0.28);
+}
+.team-name-info h4 {
+  font-family: var(--font-primary);
+  font-size: 21px;
+  font-weight: 600;
+  color: var(--cream);
+  margin-bottom: 6px;
+  letter-spacing: -0.01em;
+}
+.team-name-info p {
+  font-family: var(--font-secondary);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(237, 234, 229, 0.5);
+}
+@media (max-width: 720px) {
+  .team-names { grid-template-columns: 1fr; max-width: 480px; }
+}
 </style>
 
 <script type="application/ld+json">
@@ -2754,11 +2847,11 @@ body {
     <nav class="nav-desktop" aria-label="Navegación principal">
       <a href="#rodan" class="nav-link" data-cursor-target>Rodan 520</a>
       <a href="#servicios" class="nav-link" data-cursor-target>Servicios</a>
-      <a href="#contacto" class="nav-link" data-cursor-target>Contacto</a>
+      <a href="https://api.whatsapp.com/send?phone=+524291522866&text=Buen%20día,%20visité%20el%20sitio%20de%20ARDO%20y%20me%20gustaría%20agendar%20una%20visita.%20Agradezco%20su%20atención." class="nav-link" target="_blank" rel="noopener" data-cursor-target>Contacto</a>
     </nav>
 
     <div class="header-cta">
-      <a href="#contacto" class="btn btn-primary" data-cursor-target>
+      <a href="https://api.whatsapp.com/send?phone=+524291522866&text=Buen%20día,%20visité%20el%20sitio%20de%20ARDO%20y%20me%20gustaría%20agendar%20una%20visita.%20Agradezco%20su%20atención." class="btn btn-primary" target="_blank" rel="noopener" data-cursor-target>
         Agendar visita
         <span class="btn-arrow">→</span>
       </a>
@@ -2775,7 +2868,7 @@ body {
   <button class="nav-close" aria-label="Cerrar menú" id="nav-close">×</button>
   <a href="#rodan">Rodan 520</a>
   <a href="#servicios">Servicios</a>
-  <a href="#contacto">Contacto</a>
+  <a href="https://api.whatsapp.com/send?phone=+524291522866&text=Buen%20día,%20visité%20el%20sitio%20de%20ARDO%20y%20me%20gustaría%20agendar%20una%20visita.%20Agradezco%20su%20atención." target="_blank" rel="noopener">Contacto</a>
   <a href="https://api.whatsapp.com/send?phone=+524291522866" class="nav-mobile-cta" target="_blank" data-cursor-target>📞 Agendar visita →</a>
 </nav>
 
@@ -2797,10 +2890,10 @@ body {
         <a href="#servicios" class="btn btn-outline" data-cursor-target>Nuestros servicios</a>
       </div>
     </div>
-    <div class="hero-isotipo-wrap" data-cursor-target>
-      <div class="hero-isotipo-float">
-        <img id="hero-isotipo" src="assets/img/isotipo_ardo.png" alt="ARDO Desarrolladora — isotipo">
-      </div>
+    <div class="hero-visual hero-visual--video" data-cursor-target>
+      <video autoplay muted loop playsinline preload="metadata" poster="assets/img/Diseno-sin-titulo-2.png" aria-label="ARDO Desarrolladora">
+        <source src="assets/videos/hero_concrete.mp4" type="video/mp4">
+      </video>
     </div>
   </div>
 </section>
@@ -3016,11 +3109,10 @@ body {
       <h2>Proyectamos el futuro<em>con experiencia y detalle.</em></h2>
       <div class="statement-line"></div>
     </div>
-    <div class="statement-visual statement-visual--video reveal-scale" data-cursor-target>
-      <video class="statement-video" autoplay muted loop playsinline preload="metadata" poster="assets/img/Diseno-sin-titulo-2.png" aria-label="ARDO — Proyectamos el futuro con experiencia y detalle">
-        <source src="assets/videos/04S-VIDEO.mp4" type="video/mp4">
-      </video>
-      <div class="statement-video-overlay" aria-hidden="true"></div>
+    <div class="statement-mark-visual reveal-scale" data-cursor-target>
+      <div class="hero-isotipo-float">
+        <img id="hero-isotipo" src="assets/img/isotipo_ardo.png" alt="ARDO Desarrolladora — isotipo">
+      </div>
     </div>
   </div>
 </section>
@@ -3036,61 +3128,21 @@ body {
       <p class="lead reveal rd1">Profesionales con trayectoria comprobada, liderazgo técnico y un compromiso real con cada etapa del proyecto.</p>
     </div>
 
-    <div class="team-grid team-grid--2">
-      <div class="member reveal rd1" data-cursor-target>
-        <div class="member-photo" data-cursor-target>
-          <span class="member-tag">Foto muestra</span>
-          <img src="assets/img/alejandro.png" alt="Alejandro Arena">
+    <div class="team-names">
+      <article class="team-name-card reveal rd1" data-cursor-target>
+        <span class="team-monogram">AA</span>
+        <div class="team-name-info">
+          <h4>Alejandro Arena</h4>
+          <p>Director General</p>
         </div>
-        <h4>Alejandro Arena</h4>
-        <p>Director General</p>
-      </div>
-      <div class="member reveal rd2" data-cursor-target>
-        <div class="member-photo" data-cursor-target>
-          <span class="member-tag">Foto muestra</span>
-          <img src="assets/img/maria.png" alt="María José Arena">
+      </article>
+      <article class="team-name-card reveal rd2" data-cursor-target>
+        <span class="team-monogram">MA</span>
+        <div class="team-name-info">
+          <h4>María José Arena</h4>
+          <p>Coordinadora de Proyectos</p>
         </div>
-        <h4>María José Arena</h4>
-        <p>Coordinadora de Proyectos</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ============== CONTACTO ============== -->
-<section class="section" id="contacto">
-  <div class="container">
-    <div class="contact-head">
-      <div>
-        <span class="eyebrow reveal">05 · Contacto</span>
-        <h2 class="reveal">Cada proyecto que desarrollamos<br/><span class="accent">lleva nuestro apellido.</span></h2>
-      </div>
-      <p class="lead reveal rd1">Por eso cuidamos cada detalle. Hablemos sobre cómo podemos trabajar juntos en el siguiente desarrollo.</p>
-    </div>
-
-    <div class="contact-grid">
-      <div class="contact-items">
-        <div class="contact-item reveal">
-          <h5>Teléfono directo</h5>
-          <a href="tel:+524291522866" class="phone">429 152 2866</a>
-        </div>
-        <div class="contact-item reveal rd1">
-          <h5>Correo</h5>
-          <a href="mailto:contacto@ardo.com.mx" class="email">contacto@ardo.com.mx</a>
-        </div>
-        <div class="contact-item reveal rd2">
-          <h5>Oficinas</h5>
-          <p>Av. Cerro Gordo 130 int. 5001<br/>Torre Aryba, 4to piso<br/>León de los Aldama, Gto · 37128</p>
-        </div>
-        <a href="https://api.whatsapp.com/send?phone=+524291522866&text=Buen%20día,%20visité%20el%20sitio%20de%20ARDO%20y%20me%20gustaría%20agendar%20una%20visita.%20Agradezco%20su%20atención." class="btn btn-primary reveal" target="_blank" rel="noopener" style="width: fit-content; margin-top: 12px;" data-cursor-target>
-          Agendar visita por WhatsApp
-          <span class="btn-arrow">→</span>
-        </a>
-      </div>
-
-      <a href="https://www.google.com/maps/place/Grupo+ARYBA" class="contact-map reveal-scale" target="_blank" rel="noopener" data-cursor-target>
-        <img src="assets/img/espec_ardo.jpg" alt="ARDO Desarrolladora — Proyectamos el futuro con experiencia y detalle">
-      </a>
+      </article>
     </div>
   </div>
 </section>
